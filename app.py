@@ -4,17 +4,14 @@ import streamlit as st
 import pandas as pd
 from dotenv import load_dotenv
 
-# Import our modules
 from utils.mongo_connection import mongo_connection
 from utils.schema_detection import detect_collection_schema
 from models.query_parser import query_parser
 from models.aggregation_builder import AggregationBuilder
 from visualizations.chart_generator import ChartGenerator
 
-# Load environment variables
 load_dotenv()
 
-# Page config
 st.set_page_config(
     page_title="MongoDB Visualizer",
     page_icon="📊",
@@ -22,7 +19,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Session state initialization
 if "connected" not in st.session_state:
     st.session_state.connected = False
 if "collection" not in st.session_state:
@@ -36,7 +32,6 @@ if "last_query" not in st.session_state:
 if "last_pipeline" not in st.session_state:
     st.session_state.last_pipeline = None
 
-# Title and Description
 st.title("📊 MongoDB Chart Generator")
 st.markdown("""
 This application allows you to connect to a MongoDB database and generate charts from your data using natural language queries.

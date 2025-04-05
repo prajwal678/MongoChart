@@ -10,18 +10,6 @@ A Streamlit application that connects to MongoDB, processes natural language que
 - **Dynamic Visualization**: Generate appropriate charts based on query results
 - **Query History**: Keep track of previous queries and visualizations
 
-## Example Scenario
-
-For a movies database:
-
-1. User connects to MongoDB cluster containing film data
-2. User types: "Show number of movies released per year"
-3. System:
-   - Parses query to identify intent (count) and grouping (by year)
-   - Converts to MongoDB aggregation: `db.movies.aggregate([{$group: {_id: "$year", count: {$sum: 1}}}, {$sort: {_id: 1}}])`
-   - Determines bar chart is appropriate for this data
-   - Renders visualization with years on x-axis and counts on y-axis
-
 ## MongoDB Setup
 
 ### Local MongoDB Setup
@@ -41,6 +29,8 @@ For a movies database:
      ```bash
      brew services start mongodb-community
      ```
+
+IF NO DATABASE, IF THERE THEN JUST ADD CREDS IN THE STREAMLIT APPLICATION
 
 3. Create a new database and add sample data:
    ```bash
@@ -67,36 +57,27 @@ For a movies database:
    - Without authentication: `mongodb://localhost:27017/mydb`
    - With authentication: `mongodb://myuser:mypassword@localhost:27017/mydb`
 
-### MongoDB Atlas (Cloud) Setup
-
-1. Create a free MongoDB Atlas account at [https://www.mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas)
-2. Create a new cluster (the free tier is sufficient)
-3. Set up a database user with password authentication
-4. Add your IP address to the network access list
-5. Load sample data (optional) or create your own collections
-6. Get your connection string from the Atlas dashboard: 
-   - Click "Connect" > "Connect your application"
-   - The format will be: `mongodb+srv://username:password@cluster.mongodb.net/mydb`
 
 ## Installation
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/mongodb-chart-generator.git
-cd mongodb-chart-generator
+git clone https://github.com/prajwal678/MongoChart
+cd MongoChart
 ```
 
 2. Install dependencies:
 ```bash
+python -m venv .venv
+source .venv/bin/activate # for linux, please follow accordingly for windows n mac
 pip install -r requirements.txt
 ```
 
 3. Create a `.env` file with the following variables:
+```bash
+cp .env.example .env
 ```
-MONGO_URI=mongodb://user:password@hostname:port/dbname
-MONGO_DB_NAME=your_database_name
-GOOGLE_API_KEY=your_google_api_key
-```
+and then modify accordingly
 
 ## Usage
 
@@ -116,25 +97,3 @@ streamlit run app.py
 4. Enter a natural language query:
    - Type a question about your data (e.g., "Show me number of movies by director")
    - Click "Generate Chart" to process the query
-
-5. View and interact with the generated visualization
-
-## Project Structure
-
-- `app.py`: Main Streamlit application
-- `utils/`: MongoDB connection and schema detection utilities
-- `models/`: Query parsing and aggregation pipeline generation
-- `visualizations/`: Chart generation and selection utilities
-
-## Dependencies
-
-- Streamlit
-- PyMongo
-- LangChain
-- Google Generative AI
-- Plotly
-- Pandas
-
-## License
-
-MIT License
